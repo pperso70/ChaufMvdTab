@@ -185,27 +185,30 @@
 
             socket.onmessage = function (event) {
                 if (event.data.length < 2000) {
-                    //if (typeof event.data === 'string') {
                     //console.log("Données capteurs reçues : ", event.data);
                     const data = JSON.parse(event.data);
 
-                    //if (Array.isArray(data)) {
-                       // Array.isArray(data)
-                       // console.log("DataTable reçue :");
-                        //console.table(data);
-                    //} else {
+                    console.log('Message reçu:', data);
+                    /*
+                    if (data.dataTable) {
+                        console.log('DataTable reçue:', data.dataTable);
+                        // Traiter les données de DataTable
+                    } else {
+                        console.log('Message reçu:', data);
+                        // Traiter le message original
+                    }
+                    */
+                    document.getElementById('temps_de_cycle').textContent = data.temps_de_cycle;
+                    document.getElementById('position').textContent = data.position;
+                    document.getElementById('temperature').textContent = data.temperature;
+                    document.getElementById('rssi').textContent = data.rssi;
+                    document.getElementById('redemarrage').textContent = data.restarts;
 
-                        document.getElementById('temps_de_cycle').textContent = data.temps_de_cycle;
-                        document.getElementById('position').textContent = data.position;
-                        document.getElementById('temperature').textContent = data.temperature;
-                        document.getElementById('rssi').textContent = data.rssi;
-                        document.getElementById('redemarrage').textContent = data.restarts;
-
-                        for (let i = 1; i <= maxPoints; i++) {
-                            document.getElementById('point' + i).textContent = data['point' + i];
-                        }
-                        setInterval(updateChart, 1000);
-                   // }
+                    //for (let i = 1; i <= maxPoints; i++) {
+                    //   document.getElementById('point' + i).textContent = data['point' + i];
+                    //}
+                    setInterval(updateChart, 1000);
+                    // }
                 } else {  //>2000
                     //console.log("Image reçue, taille:", event.data.length, "bytes");
                     // Créer un Blob à partir des données binaires
@@ -223,6 +226,7 @@
                     }
                 }
             };
+            //
         };
 
         function sendCommand(command) {
